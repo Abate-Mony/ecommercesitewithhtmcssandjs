@@ -26,6 +26,9 @@ triggerOpen.forEach((triggerBtn) => {
 // code to open menu on slide 
 const { abs } = Math
 const mousemove = e => {
+    e.stopPropagation()
+    const isSlider = e.target.closest(".sliderbox")
+
     if (!isMousedown) return
     if (position_x <= 50) return
 
@@ -38,10 +41,22 @@ const mousemove = e => {
         move = e.touches[0].clientX
     }
     diff = position_x - move
-    if (diff > 1 && abs(diff) > seperate) return openData()
+    if (diff > 1 && abs(diff) > seperate) {
+
+        if (isSlider) return changeSlides(-1)
+        openData()
+
+        return
+    }
+    return
     if (abs(diff) > seperate) {
         position_x = 0
+
         isMousedown = false
+            // changeSlides(1)
+        if (isSlider) return changeSlides(1)
+
+
         if (targetElm !== qS(`#mobile-menu`)) {
             openData()
         }
@@ -53,11 +68,14 @@ const mousemove = e => {
     }
 }
 const mouseup = e => {
+    e.stopPropagation()
+
     isMousedown = false
     position_x = 0
 
 }
 const mousedown = e => {
+    e.stopPropagation()
     isMousedown = true
     const { type } = e
     if (type == "mousedown") {
@@ -78,6 +96,9 @@ window.addEventListener("touchmove", mousemove)
 
 
 
+
+
+
 const subMenu = qA(".child-trigger")
 subMenu && subMenu.forEach((menu) => {
     menu.addEventListener("click", function(e) {
@@ -86,4 +107,90 @@ subMenu && subMenu.forEach((menu) => {
         if (this.closest(".has-child").classList.contains("active")) return this.closest(".has-child").classList.remove("active")
         subMenu.forEach(item => item != this ? item.closest(".has-child").classList.remove("active") : this.closest(".has-child").classList.add("active"))
     })
+})
+
+
+const slides = [...qA(".slider .sliderbox .wrap>.item")]
+const scrollelm = qS(".slider .sliderbox .wrap")
+    // slides.forEach((slide, index) => slide.style.left = `${index*100}%`)
+var counter = 0
+const check = () => {
+    if (counter >= slides.length) {
+        counter = 0
+        return
+    }
+    if (counter < 0) counter = slides.length - 1
+}
+slides.forEach((_, index) => {
+    const button = document.createElement("button")
+    button.classList.add("navigate-button")
+    if (!index) button.classList.add("active")
+    qS(".navigate__buttons-container").appendChild(button)
+})
+
+const buttons = [...qA(".navigate-button")]
+
+buttons.forEach((btn, index) => {
+    btn.addEventListener("click", () => {
+        counter = index + 1
+        if (btn.classList.contains("active")) return
+        changeSlides(1)
+    })
+})
+
+function changeSlides(n) {
+    slides.forEach((_, index) => {
+        slides[index].classList.remove("active")
+        buttons[index].classList.remove("active")
+    })
+    if (n > 0) {
+        --counter
+        check()
+
+        slides[counter].classList.add("active")
+        buttons[counter].classList.add("active")
+    } else {
+        ++counter
+        check()
+
+        slides[counter].classList.add("active")
+        buttons[counter].classList.add("active")
+    }
+
+}
+changeSlides(-1)
+
+scrollelm.addEventListener("mousedown", mousedown)
+scrollelm.addEventListener("mouseup", mouseup)
+scrollelm.addEventListener("mousemove", mousemove)
+
+
+// for touches devices 
+scrollelm.addEventListener("touchstart", mousedown)
+scrollelm.addEventListener("touchend", mouseup)
+scrollelm.addEventListener("touchmove", mousemove)
+
+setInterval(() => {
+    changeSlides(1)
+}, 2000)
+
+
+
+
+// scroll animation here 
+var new_scroll = 0
+var old_scroll = 0
+const header = document.querySelector("header")
+const { height: heightOfHeader } = header.getBoundingClientRect()
+document.addEventListener("scroll", () => {
+    const { pageYOffset } = window
+    new_scroll = pageYOffset
+    if (pageYOffset > heightOfHeader) {
+        if (new_scroll >= old_scroll) {
+            header.classList.add("slideup")
+        } else if (new_scroll < old_scroll) {
+            header.classList.remove("slideup")
+        }
+        old_scroll = new_scroll <= 0 ? 0 : new_scroll
+    }
 })
