@@ -964,6 +964,106 @@ main>div .heading {
     opacity: 0;
 }
 
+
+/* bycat heading styles here */
+
+.bycats .heading {
+    display: flex;
+    justify-content: center;
+}
+
+.bycats .heading>span {
+    font-family: var(--second-font);
+    font-size: 2rem;
+    margin-right: 20px;
+}
+
+.bycats .heading>span,
+.opt-trigger {
+    height: 44px;
+    gap: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    -webkit-tap-highlight-color: transparent;
+    cursor: pointer;
+}
+
+.sort-list .wrap {
+    position: relative;
+}
+
+.sort-list .wrap ul {
+    position: absolute;
+    text-align: center;
+    top: 50px;
+    left: 0;
+    right: 0;
+    background: var(--white-color);
+    box-shadow: var(--shadow);
+    z-index: 10;
+    opacity: 0;
+}
+
+.sort-list .wrap ul.show {
+    animation: var(--fade);
+}
+
+.sort-list ul li a {
+    display: block;
+    padding: 5px 20px;
+    transition: var(--transition-background), var(--transition-color);
+}
+
+.sort-list ul li a:hover,
+.sort-list ul li.active a {
+    background: var(--dark-color);
+    color: var(--white-color);
+}
+
+.sort-data {
+    display: none;
+    animation: var(--fade);
+}
+
+.sort-data.active {
+    display: block;
+}
+
+
+/* banner here  */
+
+.banner {
+    background: var(--light-color);
+    background-image: url('./images/banner.png');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: right;
+    background-origin: border-box;
+}
+
+.banner .content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 2rem;
+}
+
+.banner .content span {
+    text-transform: uppercase;
+    font-size: var(--fs14);
+}
+
+.banner .content h3 {
+    --fs-max: 80px;
+}
+
+@media (min-width:760px) {
+    .banner {
+        background-size: contain;
+    }
+}
+
 @media (min-width: 992px) {
     .sub-menu a:hover::before {
         --scale: 1.5;

@@ -57,4 +57,3 @@ new Swiper(".carouselbox", {
 
     }
 })
-carousel.nextSlide()

@@ -191,6 +191,50 @@ document.addEventListener("scroll", () => {
         } else if (new_scroll < old_scroll) {
             header.classList.remove("slideup")
         }
+
         old_scroll = new_scroll <= 0 ? 0 : new_scroll
+        sorter.querySelector("ul").classList.remove("show")
     }
 })
+
+
+
+const sorter = qS(".sort-list")
+if (sorter) {
+    const sortLi = [...sorter.querySelectorAll("li")];
+    const sortData = [...
+        qA(".sort-data")
+    ]
+    const optTrigger = sorter.querySelector(".opt-trigger")
+    optTrigger.onclick = () => sorter.querySelector("ul").classList.toggle("show")
+    sortLi.forEach((li, index) => {
+        li.onclick = function() {
+            const timer = setTimeout(() => {
+                clearInterval(timer)
+                sorter.querySelector("ul").classList.remove("show")
+
+            }, 250);
+
+            const { id: dataTarget } = this.dataset
+            const tabbed = qS(".bycats")
+            const body = tabbed.querySelector(`#${dataTarget}`)
+            sortData.forEach((_, i) => i != index && _.classList.remove("active"))
+            body.classList.add("active");
+
+            sortLi.forEach(item => item !== this && item.classList.remove("active")) //removes the item that does not match the click button 
+            if (this.classList.contains("active")) return //remove the class and return back without checking the rest of the code 
+            this.classList.add("active") //add the classt to this the element that initiatedt the class
+            const text = this.textContent //get the text inside the container 
+            const value = optTrigger.querySelector("span.value") //get the location memroy and store in value
+            if (value) { //check if the value exits
+                value.textContent = text //asign to text
+            }
+
+        }
+    })
+}
+
+// tab index
+
+// const trigger = [...qA(".tabbed-trigger")]
+// const content = [...qA(".tabbed >div")]
