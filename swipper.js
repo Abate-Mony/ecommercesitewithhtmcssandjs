@@ -57,3 +57,37 @@ new Swiper(".carouselbox", {
 
     }
 })
+
+
+new Swiper(".testimonials", {
+
+    spaceBetween: 30,
+    slidesPerView: 1,
+    centerSlides: true,
+    // navigation: {
+    //     nextEl: ".swiper-button-next",
+    //     prevEl: ".swiper-button-prev",
+    // },
+    // breakpoints: {
+
+    //     481: {
+    //         slidesPerView: 1,
+    //         slidesPerGroup: 1,
+
+    //         centeredSlides: false
+    //     },
+    //     680: {
+    //         slidesPerView: 3,
+    //         slidesPerGroup: 3,
+
+    //         centeredSlides: false
+    //     },
+    //     992: {
+    //         slidesPerView: 4,
+    //         slidesPerGroup: 4,
+
+    //         centeredSlides: false
+    //     },
+
+    // }
+})

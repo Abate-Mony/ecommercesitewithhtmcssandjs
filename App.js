@@ -6,6 +6,9 @@ var targetElm = null
 var isMousedown = false
 let position_x = 0
 const seperate = 150
+const testimonials = [...qA(".snip1157")]
+console.log(testimonials);
+
 const openData = function() {
     if (!targetElm) return
     targetElm.classList.remove('active')
@@ -181,6 +184,23 @@ setInterval(() => {
 var new_scroll = 0
 var old_scroll = 0
 const header = document.querySelector("header")
+const classlist = [
+    "start-x",
+    "end-x",
+    "start-y",
+    "end-y",
+]
+
+const rand = () => Math.floor(Math.random() * 4)
+
+
+console.log(rand(), classlist[rand()]);
+
+testimonials.forEach((testimonial) => testimonial.classList.add(classlist[rand()]))
+
+
+
+
 const { height: heightOfHeader } = header.getBoundingClientRect()
 document.addEventListener("scroll", () => {
     const { pageYOffset } = window
@@ -195,11 +215,35 @@ document.addEventListener("scroll", () => {
         old_scroll = new_scroll <= 0 ? 0 : new_scroll
         sorter.querySelector("ul").classList.remove("show")
     }
+
+
+
+
+
+    testimonials.forEach((testimonial) => {
+        const H = window.innerHeight
+        const { top } = testimonial.getBoundingClientRect()
+        if (top <= .3 * H) return
+        if (top <= 0.75 * H) return testimonial.classList.add("fade")
+
+        testimonial.classList.remove("fade")
+        testimonial.classList.remove("start-x", "end-x", "end-y", "start-y")
+        testimonial.classList.add(classlist[rand()])
+    })
+
 })
 
 
 
 const sorter = qS(".sort-list")
+const promo = qS(".promo")
+    // const searchContainer = document.getElementById("search")
+const text = "winter is coming get all price at a discount"
+var i = 0
+setInterval(() => {
+    promo.textContent = "Promtion " + text.slice(0, Math.abs(i))
+    i > text.length - 1 ? i *= -1 : i += 1
+}, 100)
 if (sorter) {
     const sortLi = [...sorter.querySelectorAll("li")];
     const sortData = [...
@@ -234,7 +278,72 @@ if (sorter) {
     })
 }
 
-// tab index
+// push states 
 
-// const trigger = [...qA(".tabbed-trigger")]
-// const content = [...qA(".tabbed >div")]
+
+const navButtons = [...qA(".bottom__button")];
+var ismobilescreen = window.innerWidth < 480;
+var backhistory_pushed = false
+
+
+if (window.history && window.history.pushState) {
+
+    window.addEventListener("popstate", function() {
+
+        if (ismobilescreen && backhistory_pushed) {
+            backhistory_pushed = false
+            main.classList.remove("d-none")
+
+            // this.alert("remove start")
+        }
+    })
+}
+
+const section = qS("#section")
+const main = qS("main")
+navButtons.forEach((btn, index) => {
+    btn.addEventListener("click", e => {
+        e.preventDefault()
+        if (ismobilescreen && !backhistory_pushed) {
+            window.history.pushState("forward", null, window.location.href)
+            backhistory_pushed = true
+            main.classList.add("d-none")
+
+        }
+
+        if (index == 0) {
+            // history.pushState({}, "", "/home")
+
+
+        }
+        if (index == 1) {
+
+            // history.pushState({}, "", "/news")
+        }
+        if (index == 2) {
+
+            // history.pushState({}, "", "/carts")
+        }
+        if (index == 3) {
+
+            // history.pushState({}, "", "/favorite")
+        }
+        if (index == 4) {
+
+            // history.pushState({}, "", "/user")
+        }
+    })
+
+
+
+})
+
+const alertwrapper = qS(".alertbox-wrapper")
+const closeBtn = alertwrapper.querySelector(".close")
+closeBtn.onclick = () => alertwrapper.classList.remove("slide-right")
+setInterval(() => {
+    alertwrapper.classList.add("slide-right")
+    setTimeout(() => {
+        alertwrapper.classList.remove("slide-right")
+    }, 4000);
+}, 10000)
